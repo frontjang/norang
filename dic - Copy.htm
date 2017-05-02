@@ -1,0 +1,32 @@
+<script>
+	function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+}
+
+//usage:
+readTextFile("dic.json", function(text){
+    var data = JSON.parse(text);
+    var regex = /(<([^>]+)>)/ig
+    var word1=data[0].word+"";
+    var word=word1.replace(regex, "").trim();
+    console.log(word);
+    
+    var phonetic1=data[0].phonetic+"";
+    var phonetic2=phonetic1.replace(regex, "").trim();
+    var phonetic=phonetic2.substr(0,phonetic2.indexOf("\t"));
+    console.log(phonetic);
+    
+    var phoneticKor1=data[0].phoneticKor+"";
+    var phoneticKor=phoneticKor1.match(/\[(.*)\]/g)[0];
+    console.log(phoneticKor);
+    console.log(data);
+});
+</script>
